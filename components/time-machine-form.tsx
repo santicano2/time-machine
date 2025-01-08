@@ -15,9 +15,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { YearPickerDropdown } from "./year-picker-dropdown";
 
 const formSchema = z.object({
-  date: z.string().min(2).max(50),
+  date: z.date(),
   latitude: z.number(),
   longitude: z.number(),
 });
@@ -27,7 +28,7 @@ export default function TimeMachineForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: "",
+      date: new Date(),
       latitude: 0,
       longitude: 0,
     },
@@ -53,7 +54,7 @@ export default function TimeMachineForm() {
             <FormItem>
               <FormLabel>Año al que querés viajar</FormLabel>
               <FormControl>
-                <Input placeholder="2002" {...field} />
+                <YearPickerDropdown onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
