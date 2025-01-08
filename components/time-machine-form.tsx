@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -41,6 +42,22 @@ export default function TimeMachineForm() {
     console.log(values);
   }
 
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          form.setValue("latitude", position.coords.latitude);
+          form.setValue("longitude", position.coords.longitude);
+        },
+        (error) => {
+          console.error("Error getting geolocation", error);
+        }
+      );
+    } else {
+      console.log("Geolocation is not available");
+    }
+  }, [form]);
+
   return (
     <Form {...form}>
       <form
@@ -51,7 +68,7 @@ export default function TimeMachineForm() {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col gap-2">
               <FormLabel>Año al que querés viajar</FormLabel>
               <FormControl>
                 <YearPickerDropdown onChange={field.onChange} />
