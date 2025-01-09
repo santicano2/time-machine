@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getHistoricalData } from "@/server/actions";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,9 +38,7 @@ export default function TimeMachineForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    getHistoricalData(values.date, values.latitude, values.longitude);
   }
 
   useEffect(() => {
